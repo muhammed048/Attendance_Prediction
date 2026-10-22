@@ -135,12 +135,12 @@ function PredictionForm({ onPredict, isLoading, error }) {
       </div>
 
       <fieldset className="space-y-4" disabled={isLoading}>
-        <legend className="text-sm font-medium text-text-muted">Academic Features</legend>
+        <legend className="text-sm font-medium text-muted-gray">Academic Features</legend>
         <div className="grid sm:grid-cols-2 gap-4">
           {FEATURES.map((feature) => (
             <div key={feature.name}>
               <label htmlFor={feature.name} className="label">
-                {feature.label} {feature.unit && <span className="text-xs text-text-muted">({feature.unit})</span>}
+                {feature.label} {feature.unit && <span className="text-xs text-muted-gray">({feature.unit})</span>}
               </label>
               {feature.name === 'extracurricular' ? (
                 <div className="flex items-center gap-3">
@@ -151,11 +151,11 @@ function PredictionForm({ onPredict, isLoading, error }) {
                       name={feature.name}
                       checked={formData[feature.name] === 1}
                       onChange={handleChange}
-                      className="w-4 h-4 rounded border-border text-accent focus:ring-accent focus:ring-2"
+                      className="w-4 h-4 rounded border-border-passive text-charcoal focus:ring-charcoal focus:ring-2"
                     />
-                    <span className="text-sm text-text">Yes</span>
+                    <span className="text-sm text-charcoal">Yes</span>
                   </label>
-                  <span className="text-xs text-text-muted">
+                  <span className="text-xs text-muted-gray">
                     {formData[feature.name] === 1 ? 'Active' : 'None'}
                   </span>
                 </div>
@@ -212,10 +212,10 @@ function FactorBar({ feature, impact, maxImpact }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
-        <span className="font-medium text-text">{feature}</span>
-        <span className="text-text-muted">{impact > 0 ? '+' : ''}{impact.toFixed(3)}</span>
+        <span className="font-medium text-charcoal">{feature}</span>
+        <span className="text-muted-gray">{impact > 0 ? '+' : ''}{impact.toFixed(3)}</span>
       </div>
-      <div className="w-full h-2 bg-border rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-border-passive rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${
             isPositive ? 'bg-risk-low' : 'bg-risk-high'
@@ -246,11 +246,11 @@ function ResultCard({ result, isLoading, error }) {
 
   if (!result) {
     return (
-      <div className="card flex flex-col items-center justify-center min-h-[300px] text-center text-text-muted">
-        <svg className="w-16 h-16 mb-4 text-text-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <div className="card flex flex-col items-center justify-center min-h-[300px] text-center text-muted-gray">
+        <svg className="w-16 h-16 mb-4 text-border-passive" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
         </svg>
-        <p className="text-lg font-medium">Enter student details</p>
+        <p className="text-lg font-medium text-charcoal">Enter student details</p>
         <p className="mt-1 text-sm">Fill the form and click Predict to see results</p>
       </div>
     );
@@ -271,7 +271,7 @@ function ResultCard({ result, isLoading, error }) {
               cy="50"
               r="45"
               fill="none"
-              stroke="var(--color-border)"
+              stroke="var(--color-border-passive)"
               strokeWidth="8"
             />
             <circle
@@ -288,21 +288,21 @@ function ResultCard({ result, isLoading, error }) {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-5xl font-bold text-text">{predicted.toFixed(1)}%</span>
-            <span className="text-xs text-text-muted">Predicted Attendance</span>
+            <span className="text-5xl font-bold text-charcoal">{predicted.toFixed(1)}%</span>
+            <span className="text-xs text-muted-gray">Predicted Attendance</span>
           </div>
         </div>
 
         <div className="flex items-center justify-center gap-3">
           <RiskBadge riskLevel={riskLevel} />
-          <span className="text-sm text-text-muted">
+          <span className="text-sm text-muted-gray">
             Risk: {riskLevel} ({predicted >= 85 ? '≥85%' : predicted >= 75 ? '75-84%' : '<75%'})
           </span>
         </div>
       </div>
 
-      <div className="border-t border-border pt-6">
-        <h3 className="text-sm font-semibold text-text-muted mb-4">Top Contributing Factors</h3>
+      <div className="border-t border-border-passive pt-6">
+        <h3 className="text-sm font-semibold text-muted-gray mb-4">Top Contributing Factors</h3>
         <div className="space-y-4">
           {factors.map((factor, index) => (
             <FactorBar key={index} {...factor} maxImpact={maxImpact} />
@@ -310,7 +310,7 @@ function ResultCard({ result, isLoading, error }) {
         </div>
       </div>
 
-      <div className="pt-4 border-t border-border flex justify-end">
+      <div className="pt-4 border-t border-border-passive flex justify-end">
         <button
           type="button"
           className="btn btn-secondary text-sm"
@@ -345,10 +345,10 @@ export default function PredictPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-3xl font-semibold text-text tracking-tight">Predict Attendance</h1>
-        <p className="text-text-muted">Enter student details to predict attendance risk</p>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="heading-sub tracking-tight">Predict Attendance</h1>
+        <p className="body-muted">Enter student details to predict attendance risk</p>
       </header>
 
       <div className="grid lg:grid-cols-2 gap-6">

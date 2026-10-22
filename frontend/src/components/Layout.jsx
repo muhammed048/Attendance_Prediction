@@ -12,13 +12,13 @@ export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-background text-text flex flex-col">
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <div className="min-h-screen bg-cream text-charcoal flex flex-col">
+      <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur-sm border-b border-border-passive">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <div className="flex items-center justify-between h-16">
-            <NavLink to="/" className="flex items-center gap-2 text-xl font-semibold text-text hover:text-accent transition-colors" aria-label="Attendance Prediction Home">
+            <NavLink to="/" className="flex items-center gap-2 text-xl font-semibold text-charcoal hover:text-charcoal/80 transition-colors" aria-label="Attendance Prediction Home">
               <span className="text-2xl">🎓</span>
-              <span className="hidden sm:block">Attendance Prediction</span>
+              <span className="hidden sm:block tracking-tight">Attendance Prediction</span>
             </NavLink>
 
             <div className="hidden md:flex items-center gap-1">
@@ -29,8 +29,8 @@ export default function Layout() {
                   className={({ isActive }) =>
                     `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-accent/10 text-accent border border-accent/20'
-                        : 'text-text-muted hover:text-text hover:bg-surface'
+                        ? 'bg-charcoal-04 text-charcoal border border-border-interactive'
+                        : 'text-muted-gray hover:text-charcoal hover:bg-charcoal-04'
                     }`
                   }
                   aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
@@ -42,7 +42,7 @@ export default function Layout() {
             </div>
 
             <button
-              className="md:hidden p-2 rounded-lg text-text-muted hover:text-text hover:bg-surface transition-colors"
+              className="md:hidden btn-pill p-2 text-charcoal"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -53,7 +53,7 @@ export default function Layout() {
           </div>
 
           {mobileMenuOpen && (
-            <div id="mobile-menu" className="md:hidden py-4 border-t border-border animate-slide-down">
+            <div id="mobile-menu" className="md:hidden py-4 border-t border-border-passive animate-slide-down">
               <div className="flex flex-col gap-1">
                 {navItems.map((item) => (
                   <NavLink
@@ -63,8 +63,8 @@ export default function Layout() {
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium transition-colors ${
                         isActive
-                          ? 'bg-accent/10 text-accent border border-accent/20'
-                          : 'text-text-muted hover:text-text hover:bg-surface'
+                          ? 'bg-charcoal-04 text-charcoal border border-border-interactive'
+                          : 'text-muted-gray hover:text-charcoal hover:bg-charcoal-04'
                       }`
                     }
                     aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
@@ -79,25 +79,15 @@ export default function Layout() {
         </nav>
       </header>
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
         <Outlet />
       </main>
 
-      <footer className="border-t border-border py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-text-muted text-sm">
+      <footer className="border-t border-border-passive py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-muted-gray text-sm">
           Student Attendance Prediction System
         </div>
       </footer>
-
-      <style jsx>{`
-        @keyframes slide-down {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-slide-down {
-          animation: slide-down 0.2s ease-out;
-        }
-      `}</style>
     </div>
   )
 }

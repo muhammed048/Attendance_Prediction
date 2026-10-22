@@ -17,6 +17,7 @@ import {
   ReferenceLine,
   Cell,
 } from 'recharts';
+import { chartTheme, getSeriesColor } from '../chartTheme';
 
 const COLUMNS = [
   { key: 'id', label: 'ID', sortable: true },
@@ -97,7 +98,7 @@ function StudentTable({ students, sortConfig, onSort, searchTerm, riskFilter }) 
 
   if (sorted.length === 0) {
     return (
-      <div className="text-center py-12 text-text-muted">
+      <div className="text-center py-12 text-muted-gray">
         <EmptyState
           icon="🔍"
           title="No students found"
@@ -111,11 +112,11 @@ function StudentTable({ students, sortConfig, onSort, searchTerm, riskFilter }) 
     <div className="overflow-x-auto">
       <table className="w-full text-sm" role="grid">
         <thead>
-          <tr className="border-b border-border text-left text-text-muted">
+          <tr className="border-b border-border-passive text-left text-muted-gray">
             {COLUMNS.map((col) => (
               <th
                 key={col.key}
-                className={`px-4 py-3 font-medium ${col.sortable ? 'cursor-pointer hover:text-accent select-none' : ''}`}
+                className={`px-4 py-3 font-medium ${col.sortable ? 'cursor-pointer hover:text-charcoal select-none' : ''}`}
                 onClick={() => handleSort(col.key)}
                 style={{ userSelect: col.sortable ? 'none' : 'auto' }}
                 aria-sort={
@@ -138,17 +139,17 @@ function StudentTable({ students, sortConfig, onSort, searchTerm, riskFilter }) 
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-border">
+        <tbody className="divide-y divide-border-passive">
           {sorted.map((student) => (
-            <tr key={student.id} className="hover:bg-surface/50 transition-colors">
-              <td className="px-4 py-3 text-text-muted">{student.id}</td>
-              <td className="px-4 py-3 font-medium text-text">{student.input_data.name || 'Unknown'}</td>
-              <td className="px-4 py-3 text-text-muted font-mono">{student.input_data.roll_no || 'N/A'}</td>
-              <td className="px-4 py-3 text-text">{student.predicted_attendance.toFixed(1)}%</td>
+            <tr key={student.id} className="hover:bg-charcoal-03 transition-colors">
+              <td className="px-4 py-3 text-muted-gray">{student.id}</td>
+              <td className="px-4 py-3 font-medium text-charcoal">{student.input_data.name || 'Unknown'}</td>
+              <td className="px-4 py-3 text-muted-gray font-mono">{student.input_data.roll_no || 'N/A'}</td>
+              <td className="px-4 py-3 text-charcoal">{student.predicted_attendance.toFixed(1)}%</td>
               <td className="px-4 py-3">
                 <RiskBadge riskLevel={student.risk_level} />
               </td>
-              <td className="px-4 py-3 text-text-muted">
+              <td className="px-4 py-3 text-muted-gray">
                 {new Date(student.created_at).toLocaleDateString()}
               </td>
             </tr>
@@ -168,57 +169,46 @@ function AttendanceDistributionChart({ students }) {
       <h3 className="text-lg font-semibold mb-4">Attendance Distribution</h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+          <BarChart data={data} margin={chartTheme.spacing.margin}>
+            <CartesianGrid {...chartTheme.grid.horizontal} />
             <XAxis
               dataKey="range"
-              tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }}
-              axisLine={{ stroke: 'var(--color-border)' }}
-              tickLine={{ stroke: 'var(--color-border)' }}
+              {...chartTheme.axis.x}
             />
             <YAxis
-              tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }}
-              axisLine={false}
-              tickLine={false}
+              {...chartTheme.axis.y}
               domain={[0, Math.max(maxCount + 1, 5)]}
             />
             <Tooltip
-              contentStyle={{
-                backgroundColor: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '8px',
-              }}
-              labelStyle={{ color: 'var(--color-text)' }}
+              {...chartTheme.tooltip}
               formatter={(value) => [value, 'Students']}
             />
             <Bar
               dataKey="count"
-              radius={[4, 4, 0, 0]}
+              radius={[chartTheme.radius.bar, chartTheme.radius.bar, 0, 0]}
               barSize={30}
-              maxBarSize={40}
+              maxBarSize={chartTheme.radius.barMax}
             >
               {data.map((entry, index) => (
-                <Cell key={index} fill="var(--color-accent)" />
+                <Cell key={index} fill={getSeriesColor(0)} />
               ))}
             </Bar>
             <ReferenceLine
               x={7.5}
               stroke="var(--color-risk-medium)"
-              strokeDasharray="5 5"
-              strokeWidth={2}
+              {...chartTheme.referenceLine}
               label={{ value: '75%', position: 'top', fill: 'var(--color-risk-medium)', fontSize: 10 }}
             />
             <ReferenceLine
               x={8.5}
               stroke="var(--color-risk-low)"
-              strokeDasharray="5 5"
-              strokeWidth={2}
+              {...chartTheme.referenceLine}
               label={{ value: '85%', position: 'top', fill: 'var(--color-risk-low)', fontSize: 10 }}
             />
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <p className="mt-3 text-xs text-text-muted flex items-center gap-4">
+      <p className="mt-3 text-xs text-muted-gray flex items-center gap-4">
         <span className="flex items-center gap-1">
           <span className="w-3 h-3 rounded" style={{ backgroundColor: 'var(--color-risk-medium)' }} />
           Medium threshold (75%)
@@ -260,10 +250,10 @@ export default function StudentsPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <header className="space-y-1">
-          <h1 className="text-3xl font-semibold text-text tracking-tight">Student History</h1>
-          <p className="text-text-muted">View all previous predictions</p>
+      <div className="space-y-8">
+        <header className="space-y-2">
+          <h1 className="heading-sub tracking-tight">Student History</h1>
+          <p className="body-muted">View all previous predictions</p>
         </header>
         <div className="grid sm:grid-cols-3 gap-4">
           {[RISK_LEVELS.LOW, RISK_LEVELS.MEDIUM, RISK_LEVELS.HIGH].map((level) => (
@@ -283,10 +273,10 @@ export default function StudentsPage() {
 
   if (error) {
     return (
-      <div className="space-y-6">
-        <header className="space-y-1">
-          <h1 className="text-3xl font-semibold text-text tracking-tight">Student History</h1>
-          <p className="text-text-muted">View all previous predictions</p>
+      <div className="space-y-8">
+        <header className="space-y-2">
+          <h1 className="heading-sub tracking-tight">Student History</h1>
+          <p className="body-muted">View all previous predictions</p>
         </header>
         <ErrorBanner message={error} />
       </div>
@@ -294,10 +284,10 @@ export default function StudentsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-3xl font-semibold text-text tracking-tight">Student History</h1>
-        <p className="text-text-muted">View all previous predictions</p>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="heading-sub tracking-tight">Student History</h1>
+        <p className="body-muted">View all previous predictions</p>
       </header>
 
       <div className="grid sm:grid-cols-3 gap-4">

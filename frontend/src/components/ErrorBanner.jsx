@@ -18,7 +18,7 @@ export default function ErrorBanner({ message, onDismiss, className = '' }) {
         <button
           type="button"
           onClick={onDismiss}
-          className="flex-shrink-0 p-1 rounded hover:bg-risk-high/20 transition-colors text-text-muted hover:text-risk-high"
+          className="flex-shrink-0 p-1 rounded hover:bg-risk-high/20 transition-colors text-muted-gray hover:text-risk-high"
           aria-label="Dismiss error"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

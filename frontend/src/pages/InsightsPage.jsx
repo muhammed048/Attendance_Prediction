@@ -14,16 +14,17 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
+import { chartTheme, getSeriesColor } from '../chartTheme';
 
 const FEATURE_LABELS = Object.fromEntries(FEATURES.map((f) => [f.name, f.label]));
 
 function ConfusionMatrix({ matrix }) {
   const [[tn, fp], [fn, tp]] = matrix;
   const cells = [
-    { label: 'True Negative', value: tn, bg: 'var(--color-risk-low)/10', border: 'var(--color-risk-low)/30', desc: 'Correctly predicted Low/Medium risk' },
-    { label: 'False Positive', value: fp, bg: 'var(--color-risk-medium)/10', border: 'var(--color-risk-medium)/30', desc: 'Incorrectly predicted High risk' },
-    { label: 'False Negative', value: fn, bg: 'var(--color-risk-medium)/10', border: 'var(--color-risk-medium)/30', desc: 'Incorrectly predicted Low/Medium risk' },
-    { label: 'True Positive', value: tp, bg: 'var(--color-risk-high)/10', border: 'var(--color-risk-high)/30', desc: 'Correctly predicted High risk' },
+    { label: 'True Negative', value: tn, bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)', desc: 'Correctly predicted Low/Medium risk' },
+    { label: 'False Positive', value: fp, bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', desc: 'Incorrectly predicted High risk' },
+    { label: 'False Negative', value: fn, bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', desc: 'Incorrectly predicted Low/Medium risk' },
+    { label: 'True Positive', value: tp, bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', desc: 'Correctly predicted High risk' },
   ];
 
   return (
@@ -35,13 +36,13 @@ function ConfusionMatrix({ matrix }) {
             key={index}
             className={`p-4 rounded-lg border text-center ${cell.bg} ${cell.border}`}
           >
-            <p className="text-3xl font-bold text-text">{cell.value}</p>
-            <p className="text-sm font-medium text-text-muted mt-1">{cell.label}</p>
-            <p className="text-xs text-text-muted mt-2">{cell.desc}</p>
+            <p className="text-3xl font-bold text-charcoal">{cell.value}</p>
+            <p className="text-sm font-medium text-muted-gray mt-1">{cell.label}</p>
+            <p className="text-xs text-muted-gray mt-2">{cell.desc}</p>
           </div>
         ))}
       </div>
-      <p className="mt-3 text-xs text-text-muted text-center">
+      <p className="mt-3 text-xs text-muted-gray text-center">
         Rows: Actual | Columns: Predicted | High risk = Positive class
       </p>
     </div>
@@ -54,7 +55,7 @@ function RegressionMetricsTable({ regression, bestModel }) {
       <h3 className="text-lg font-semibold mb-4">Regression Metrics</h3>
       <table className="w-full text-sm" role="table">
         <thead>
-          <tr className="border-b border-border text-left text-text-muted">
+          <tr className="border-b border-border-passive text-left text-muted-gray">
             <th className="px-4 py-3 font-medium">Model</th>
             <th className="px-4 py-3 font-medium text-right">MAE</th>
             <th className="px-4 py-3 font-medium text-right">MSE</th>
@@ -62,30 +63,30 @@ function RegressionMetricsTable({ regression, bestModel }) {
             <th className="px-4 py-3 font-medium text-right">R²</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-border">
+        <tbody className="divide-y divide-border-passive">
           {regression.map((row) => (
             <tr
               key={row.model}
               className={`transition-colors ${
                 row.model === bestModel
-                  ? 'bg-accent/5 border-l-4 border-accent'
-                  : 'hover:bg-surface/50'
+                  ? 'bg-charcoal-03 border-l-4 border-charcoal'
+                  : 'hover:bg-charcoal-03'
               }`}
             >
-              <td className="px-4 py-3 font-medium text-text">
+              <td className="px-4 py-3 font-medium text-charcoal">
                 {row.model} {row.model === bestModel && (
                   <span className="ml-2 badge badge-low text-xs">Best</span>
                 )}
               </td>
-              <td className="px-4 py-3 text-text-muted text-right font-mono">{row.mae.toFixed(4)}</td>
-              <td className="px-4 py-3 text-text-muted text-right font-mono">{row.mse.toFixed(4)}</td>
-              <td className="px-4 py-3 text-text-muted text-right font-mono">{row.rmse.toFixed(4)}</td>
-              <td className="px-4 py-3 text-text-muted text-right font-mono">{row.r2.toFixed(4)}</td>
+              <td className="px-4 py-3 text-muted-gray text-right font-mono">{row.mae.toFixed(4)}</td>
+              <td className="px-4 py-3 text-muted-gray text-right font-mono">{row.mse.toFixed(4)}</td>
+              <td className="px-4 py-3 text-muted-gray text-right font-mono">{row.rmse.toFixed(4)}</td>
+              <td className="px-4 py-3 text-muted-gray text-right font-mono">{row.r2.toFixed(4)}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <p className="mt-3 text-xs text-text-muted">
+      <p className="mt-3 text-xs text-muted-gray">
         MAE = Mean Absolute Error | MSE = Mean Squared Error | RMSE = Root Mean Squared Error | R² = Coefficient of Determination
       </p>
     </div>
@@ -137,43 +138,33 @@ function FeatureImportanceChart({ features }) {
           <BarChart
             data={sortedFeatures}
             layout="vertical"
-            margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+            margin={chartTheme.spacing.marginVertical}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" horizontal={false} />
+            <CartesianGrid {...chartTheme.grid.horizontal} />
             <XAxis
               type="number"
               domain={[0, maxImportance * 1.15]}
-              tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }}
-              axisLine={{ stroke: 'var(--color-border)' }}
-              tickLine={{ stroke: 'var(--color-border)' }}
+              {...chartTheme.axis.x}
               tickFormatter={(v) => (v * 100).toFixed(0) + '%'}
             />
             <YAxis
               type="category"
               dataKey="label"
-              width={160}
-              tick={{ fill: 'var(--color-text)', fontSize: 12 }}
-              axisLine={false}
-              tickLine={false}
+              {...chartTheme.axis.categoryY}
             />
             <Tooltip
-              contentStyle={{
-                backgroundColor: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '8px',
-              }}
-              labelStyle={{ color: 'var(--color-text)' }}
+              {...chartTheme.tooltip}
               formatter={(value) => [(value * 100).toFixed(1) + '%', 'Importance']}
             />
-            <Bar dataKey="importance" radius={[0, 4, 4, 0]} barSize={30} maxBarSize={40}>
+            <Bar dataKey="importance" radius={[0, chartTheme.radius.bar, chartTheme.radius.bar, 0]} barSize={30} maxBarSize={chartTheme.radius.barMax}>
               {sortedFeatures.map((_, index) => (
-                <Cell key={index} fill="var(--color-accent)" />
+                <Cell key={index} fill={getSeriesColor(0)} />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <p className="mt-2 text-xs text-text-muted">
+      <p className="mt-2 text-xs text-muted-gray">
         Normalized importance weights from the trained model (LinearRegression coefficients)
       </p>
     </div>
@@ -182,10 +173,10 @@ function FeatureImportanceChart({ features }) {
 
 function MetricsLoader() {
   return (
-    <div className="space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-3xl font-semibold text-text tracking-tight">Insights</h1>
-        <p className="text-text-muted">Model metrics and feature importance</p>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="heading-sub tracking-tight">Insights</h1>
+        <p className="body-muted">Model metrics and feature importance</p>
       </header>
       <div className="animate-pulse space-y-6">
         <div className="grid sm:grid-cols-3 gap-4">
@@ -228,10 +219,10 @@ export default function InsightsPage() {
 
   if (error) {
     return (
-      <div className="space-y-6">
-        <header className="space-y-1">
-          <h1 className="text-3xl font-semibold text-text tracking-tight">Insights</h1>
-          <p className="text-text-muted">Model metrics and feature importance</p>
+      <div className="space-y-8">
+        <header className="space-y-2">
+          <h1 className="heading-sub tracking-tight">Insights</h1>
+          <p className="body-muted">Model metrics and feature importance</p>
         </header>
         <ErrorBanner message={error} />
       </div>
@@ -242,10 +233,10 @@ export default function InsightsPage() {
   const features = featureImportance?.features || [];
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-3xl font-semibold text-text tracking-tight">Insights</h1>
-        <p className="text-text-muted">Model metrics and feature importance</p>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="heading-sub tracking-tight">Insights</h1>
+        <p className="body-muted">Model metrics and feature importance</p>
       </header>
 
       <div className="space-y-6">
