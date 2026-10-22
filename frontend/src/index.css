@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #010102;
+  --color-surface: #0f1011;
+  --color-border: #232629;
+  --color-text: #f7f8f8;
+  --color-text-muted: #8b8d8f;
+  --color-accent: #5e6ad2;
+  --color-accent-hover: #7c87e8;
+  --color-risk-low: #22c55e;
+  --color-risk-medium: #f59e0b;
+  --color-risk-high: #ef4444;
+  --font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+  }
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border);
+  }
+}
+
+@layer components {
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn:focus-visible {
+    outline: none;
+    ring: 2px;
+    ring-color: var(--color-accent);
+    ring-offset: 2px;
+    ring-offset-color: var(--color-background);
+  }
+  .btn-primary {
+    background-color: var(--color-accent);
+    color: white;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-accent-hover);
+  }
+  .btn-secondary {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+  .btn-secondary:hover {
+    background-color: var(--color-border);
+  }
+  .btn-danger {
+    background-color: var(--color-risk-high);
+    color: white;
+  }
+  .btn-danger:hover {
+    background-color: #dc2626;
+  }
+  .input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .input::placeholder {
+    color: var(--color-text-muted);
+  }
+  .input:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: var(--color-accent);
+    border-color: transparent;
+  }
+  .label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .badge-low {
+    background-color: rgb(34 197 94 / 0.2);
+    color: var(--color-risk-low);
+    border: 1px solid rgb(34 197 94 / 0.3);
+  }
+  .badge-medium {
+    background-color: rgb(245 158 11 / 0.2);
+    color: var(--color-risk-medium);
+    border: 1px solid rgb(245 158 11 / 0.3);
+  }
+  .badge-high {
+    background-color: rgb(239 68 68 / 0.2);
+    color: var(--color-risk-high);
+    border: 1px solid rgb(239 68 68 / 0.3);
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 3px;
+  }
+}
