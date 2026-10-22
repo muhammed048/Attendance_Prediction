@@ -111,10 +111,10 @@ function FileDropzone({ onFileSelect, disabled, error }) {
     <div
       className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
         isDragOver
-          ? 'border-accent bg-accent/5'
+          ? 'border-charcoal bg-charcoal-03'
           : error
           ? 'border-risk-high bg-risk-high/5'
-          : 'border-border hover:border-accent/50'
+          : 'border-border-passive hover:border-charcoal/50'
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -134,7 +134,7 @@ function FileDropzone({ onFileSelect, disabled, error }) {
         aria-hidden="true"
       />
       <svg
-        className="w-12 h-12 mx-auto mb-4 text-text-muted"
+        className="w-12 h-12 mx-auto mb-4 text-muted-gray"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -147,10 +147,10 @@ function FileDropzone({ onFileSelect, disabled, error }) {
           d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
         />
       </svg>
-      <p className="text-lg font-medium text-text mb-1">
+      <p className="text-lg font-medium text-charcoal mb-1">
         {isDragOver ? 'Drop CSV file here' : 'Drag & drop CSV file, or click to browse'}
       </p>
-      <p className="text-sm text-text-muted mb-4">.csv files only</p>
+      <p className="text-sm text-muted-gray mb-4">.csv files only</p>
       {error && (
         <p className="text-sm text-risk-high" role="alert">
           Please select a valid .csv file
@@ -197,7 +197,7 @@ function ResultsTable({ results }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Results ({sortedResults.length})</h3>
+        <h3 className="text-lg font-semibold text-charcoal">Results ({sortedResults.length})</h3>
         <button
           type="button"
           onClick={handleExport}
@@ -209,19 +209,19 @@ function ResultsTable({ results }) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm" role="grid">
           <thead>
-            <tr className="border-b border-border text-left text-text-muted">
+            <tr className="border-b border-border-passive text-left text-muted-gray">
               {columns.map((col) => (
-                <th key={col.key} className="px-4 py-3 font-medium">
+                <th key={col.key} className="px-4 py-3 font-medium text-charcoal">
                   {col.label}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-border">
+          <tbody className="divide-y divide-border-passive">
             {sortedResults.map((row, index) => (
-              <tr key={index} className="hover:bg-surface/50 transition-colors">
+              <tr key={index} className="hover:bg-charcoal-03 transition-colors">
                 {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3">
+                  <td key={col.key} className="px-4 py-3 text-charcoal">
                     {col.render ? col.render(row[col.key]) : col.format ? col.format(row[col.key]) : row[col.key]}
                   </td>
                 ))}
@@ -272,15 +272,15 @@ export default function BatchPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-3xl font-semibold text-text tracking-tight">Batch Prediction</h1>
-        <p className="text-text-muted">Upload CSV file for bulk attendance predictions</p>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="heading-sub tracking-tight">Batch Prediction</h1>
+        <p className="body-muted">Upload CSV file for bulk attendance predictions</p>
       </header>
 
       <div className="card space-y-6">
         <section>
-          <h2 className="text-lg font-semibold mb-4">Upload CSV</h2>
+          <h2 className="text-lg font-semibold text-charcoal mb-4">Upload CSV</h2>
           <FileDropzone
             onFileSelect={handleFileSelect}
             disabled={isUploading}
@@ -303,7 +303,7 @@ export default function BatchPage() {
               Download Template CSV
             </button>
           </div>
-          <p className="mt-2 text-sm text-text-muted">
+          <p className="mt-2 text-sm text-muted-gray">
             Template includes: name, roll_no, and all 8 features (previous_attendance, internal_marks, assignment_submission_rate, study_hours, late_arrivals, previous_gpa, distance_from_college, extracurricular)
           </p>
         </section>
