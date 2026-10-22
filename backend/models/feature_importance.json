@@ -1,0 +1,32 @@
+{
+    "features": [
+        {
+            "feature": "previous_attendance",
+            "importance": 0.280167
+        },
+        {
+            "feature": "late_arrivals",
+            "importance": 0.164207
+        },
+        {
+            "feature": "distance_from_college",
+            "importance": 0.140592
+        },
+        {
+            "feature": "study_hours",
+            "importance": 0.134524
+        },
+        {
+            "feature": "internal_marks",
+            "importance": 0.111585
+        },
+        {
+            "feature": "assignment_submission_rate",
+            "importance": 0.106658
+        },
+        {
+            "feature": "previous_gpa",
+            "importance": 0.062267
+        }
+    ]
+}
