@@ -17,7 +17,7 @@ export default function Layout() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <div className="flex items-center justify-between h-16">
             <NavLink to="/" className="flex items-center gap-2 text-xl font-semibold text-charcoal hover:text-charcoal/80 transition-colors" aria-label="Attendance Prediction Home">
-              <span className="text-2xl">🎓</span>
+              <span className="text-2xl"></span>
               <span className="hidden sm:block tracking-tight">Attendance Prediction</span>
             </NavLink>
 
